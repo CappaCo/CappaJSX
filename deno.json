@@ -3,7 +3,8 @@
     "version": "0.1.3",
     "license": "MIT",
     "exports": {
-        ".": "./mod.ts"
+        ".": "./mod.ts",
+        "./jsx-runtime": "./jsx-runtime"
     },
     "fmt": {
         "indentWidth": 4,
