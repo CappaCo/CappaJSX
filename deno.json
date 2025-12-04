@@ -1,9 +1,9 @@
 {
     "name": "@cappa-co/cappa-jsx",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "license": "MIT",
     "exports": {
-        ".": "./src/jsx-runtime.ts"
+        ".": "./mod.ts"
     },
     "fmt": {
         "indentWidth": 4,

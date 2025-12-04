@@ -1,4 +1,4 @@
-// jsx-runtime.ts
+// mod.ts
 
 // ---------- Factory & Fragment -----------
 
