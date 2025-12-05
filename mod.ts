@@ -47,7 +47,7 @@ const voidElements: Set<string> = new Set([
     "wbr",
 ]);
 
-export function renderPage(page: VNode) {
+export function renderPage(page: VNode): string {
     return "<!DOCTYPE html>\n" + renderToString(page);
 }
 
