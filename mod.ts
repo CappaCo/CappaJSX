@@ -47,29 +47,12 @@ const voidElements: Set<string> = new Set([
     "wbr",
 ]);
 
-function escapeHtml(str: string) {
-    return str
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-}
-
-function renderAttributes(props: Record<string, any> | null) {
-    return props
-        ? " " +
-            Object.entries(props).filter(([_, v]) => v != null && v !== false)
-                .map(([k, v]) => {
-                    if (k === "className") return `class="${String(v)}"`;
-                    if (typeof v === "boolean") return v ? k : `${k}="false"`;
-                    return `${k}="${String(v)}"`;
-                }).join(" ")
-        : "";
+export function renderPage(page: VNode) {
+    return "<!DOCTYPE html>\n" + renderToString(page);
 }
 
 // Render a VNode to a string
-export function renderToString(node: Array<any> | VNode | any): string {
+function renderToString(node: Array<any> | VNode | any): string {
     if (node === null) {console.error("node is null???"); return "";}
 
     // If array, render each child
@@ -82,12 +65,6 @@ export function renderToString(node: Array<any> | VNode | any): string {
     }
 
     return escapeHtml(String(node));
-}
-
-function isVNode(x: any): boolean {
-    if (typeof x !== "object") return false;
-    if (!("tag" in x && "props" in x && "children" in x)) return false;
-    return true;
 }
 
 function renderVNode(node: VNode): string {
@@ -119,4 +96,31 @@ function renderVNode(node: VNode): string {
 
     console.error("type of tag was not null, function or string!");
     return "";
+}
+
+function renderAttributes(props: Record<string, any> | null) {
+    return props
+        ? " " +
+            Object.entries(props).filter(([_, v]) => v != null && v !== false)
+                .map(([k, v]) => {
+                    if (k === "className") return `class="${String(v)}"`;
+                    if (typeof v === "boolean") return v ? k : `${k}="false"`;
+                    return `${k}="${String(v)}"`;
+                }).join(" ")
+        : "";
+}
+
+function isVNode(x: any): boolean {
+    if (typeof x !== "object") return false;
+    if (!("tag" in x && "props" in x && "children" in x)) return false;
+    return true;
+}
+
+function escapeHtml(str: string) {
+    return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
