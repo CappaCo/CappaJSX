@@ -3,28 +3,30 @@
 // ---------- Factory & Fragment -----------
 
 interface VNode {
-    tag: string | Function | null;
-    props: Record<string, any> | null;
+    tag: Function | Symbol | string;
+    props: Record<string, any>;
     children: any;
+    key: string | null;
 }
 
 // JSX Factory
 export function CappaFactory(
-    tag: Function | string,
-    props: Record<string, any> | null,
-    ...children: (VNode | string)[]
+    tag: Function | Symbol | string,
+    props: Record<string, any>,
+    key?: string | null
 ): VNode {
+    const children = props.children;
+    delete props.children;
     return {
         tag,
         props,
         children,
+        key: key ?? null,
     };
 }
 
 // Fragment as a function
-export function CappaFragment({ children }: { children?: any }): VNode {
-    return { tag: null, props: {}, children };
-}
+export const CappaFragment = Symbol("CappaFragment");
 
 // ---------- Rendering -----------
 
@@ -91,15 +93,14 @@ function isVNode(x: any): boolean {
 function renderVNode(node: VNode): string {
     const tag = node.tag;
 
-    // VNode with tag === null (Fragment)
-    if (tag === null) {
+    // Fragment
+    if (tag === CappaFragment) {
         return renderToString(node.children);
     }
 
     // Functional node
     if (typeof tag === "function") {
-        const out = tag({ ...node.props, children: node.children });
-        return renderToString(out);
+        return renderToString(tag({ ...node.props, children: node.children }));
     }
 
     // HTML element
