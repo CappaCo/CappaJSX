@@ -13,18 +13,28 @@ interface VNode {
 export function CappaFactory(
     tag: Function | Symbol | string,
     props: Record<string, any> | null,
-    key?: string | null
+    ...children: any[]
 ): VNode {
+
+    console.log("tag: ", tag);
+    console.log("props: ", props);
+    console.log("children: ", children);
+
     props = props ?? {};
-    
-    const children = props.children;
+
+    // If children were passed via props (rare), merge them
+    const finalChildren =
+        children.length > 0
+            ? children
+            : props.children;
+
     delete props.children;
-    
+
     return {
         tag,
         props,
-        children,
-        key: key ?? null,
+        children: finalChildren,
+        key: null,
     };
 }
 
