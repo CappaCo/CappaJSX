@@ -12,11 +12,14 @@ interface VNode {
 // JSX Factory
 export function CappaFactory(
     tag: Function | Symbol | string,
-    props: Record<string, any>,
+    props: Record<string, any> | null,
     key?: string | null
 ): VNode {
+    props = props ?? {};
+    
     const children = props.children;
     delete props.children;
+    
     return {
         tag,
         props,
